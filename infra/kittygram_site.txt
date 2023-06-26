@@ -1,0 +1,5 @@
+IP: 31.129.96.169;
+name_taski: https://cl02.store/;
+name_kittygram: https://kitty.cl02.store/;
+login: admin;
+password: admin; 

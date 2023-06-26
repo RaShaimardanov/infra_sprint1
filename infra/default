@@ -1,0 +1,81 @@
+server {
+    server_name 31.129.96.169 cl02.store;
+
+     location /api/ {
+         proxy_pass http://127.0.0.1:8000;
+    }
+
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8000;
+    }
+
+    location / {
+        root   /var/www/taski;
+        index  index.html index.htm;
+        try_files $uri /index.html;
+    }
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/cl02.store/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/cl02.store/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = cl02.store) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+
+    listen 80;
+    server_name 31.129.96.169 cl02.store;
+    return 404; # managed by Certbot
+
+
+}
+server {
+    listen 80;
+    server_name kitty.cl02.store;
+    
+    location /api/ {
+        proxy_pass http://127.0.0.1:8080;
+    }
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8080;
+    }
+    location /media/ {
+        alias /var/www/infra_sprint1/media/;
+    }
+
+
+    location / {
+        root   /var/www/infra_sprint1;
+        index  index.html index.htm;
+        try_files $uri /index.html;
+    }
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/kitty.cl02.store/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/kitty.cl02.store/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+} 
+
+server {
+    if ($host = kitty.cl02.store) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+
+    listen 80;
+    server_name kitty.cl02.store;
+    return 404; # managed by Certbot
+
+
+}
